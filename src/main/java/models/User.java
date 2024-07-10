@@ -13,12 +13,14 @@ public class User {
     }
 
 
-    public void setEmail(String email) {
+    public User withEmail(String email) {
         this.email = email;
+        return this;
     }
 
-    public void setPassword(String password) {
+    public User withPassword(String password) {
         this.password = password;
+        return this;
     }
 
     @Override
