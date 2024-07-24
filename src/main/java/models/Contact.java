@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 
-public class Contact {
+public class   Contact {
 
     private String name;
     private String lastName;
