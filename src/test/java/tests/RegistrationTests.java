@@ -12,15 +12,20 @@ public class RegistrationTests extends TestBase{
     public void precondition(){
         if(app.getHelperUser().isLogged()){
             app.getHelperUser().logout();
+            logger.info("User is logged out");
         }
     }
     @Test
     public void registrationSuccess(){
         int i = (int) ((System.currentTimeMillis()/1000)%3600);
         User user = new User().withEmail("test"+i+"@gmail.com").withPassword("Codirovka84!");
+        logger.info("Registration with email  "+user.getEmail()+" & PWD \"Codirovka84!\" ");
         app.getHelperUser().openLoginRegistrationForm();
+        logger.info("Registration form opened");
         app.getHelperUser().fillLoginRegistrationForm(user);
+        logger.info("Registration form filled");
         app.getHelperUser().submitRegistration();
+        logger.info("Registration form submited");
         Assert.assertTrue(app.getHelperUser().isLogged());
         Assert.assertTrue(app.getHelperUser().isNoContactsHereDisplayed());
     }

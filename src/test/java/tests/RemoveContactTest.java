@@ -41,8 +41,9 @@ public class RemoveContactTest extends TestBase{
         app.getHelperContact().fillContactForm(contact);
         app.getHelperContact().saveContactForm();
 
-        List<WebElement> listBefore = wd.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
-        WebElement contactToRemove = null;
+//        List<WebElement> listBefore = wd.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
+         List<WebElement> listBefore = wd.findElements(By.cssSelector("h3"));
+        System.out.println("List size = " + listBefore.size());
             for(WebElement element : listBefore) {
                 WebElement phoneData = element.findElement(By.xpath("//h3[text()='" + phone + "']"));
               if(phoneData.isDisplayed()){
@@ -56,6 +57,12 @@ public class RemoveContactTest extends TestBase{
     }
     @Test
     public void removeAllContact(){
-        //No contacts here
+     List<WebElement> list = wd.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
+       for(WebElement element : list) {
+            WebElement elementToRemove = element.findElement(By.cssSelector("h3"));
+            elementToRemove.click();
+            app.getHelperContact().click(By.xpath("//button[text()='Remove']"));
+            }
+       Assert.assertTrue(list.isEmpty());
     }
 }
