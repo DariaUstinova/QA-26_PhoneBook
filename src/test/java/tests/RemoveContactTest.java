@@ -26,43 +26,29 @@ public class RemoveContactTest extends TestBase{
     }
 
     @Test
-    public void removeFirstContact(){
+    public void removeOneContact(){
         int i = new Random().nextInt(1000)+1000;
         Contact contact = Contact.builder()
-                .name("Jay"+i)
-                .lastName("Lo")
-                .phone("058111"+i)
-                .email("jlo"+i+"@test.com")
-                .address("Uta")
-                .description("PM")
-                .build();
+                .name("Jay"+i).lastName("Lo").phone("058111"+i).email("jlo"+i+"@test.com")
+                .address("Uta").description("PM").build();
         String phone = contact.getPhone();
         app.getHelperContact().openContactForm();
         app.getHelperContact().fillContactForm(contact);
         app.getHelperContact().saveContactForm();
 
-//        List<WebElement> listBefore = wd.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
-         List<WebElement> listBefore = wd.findElements(By.cssSelector("h3"));
-        System.out.println("List size = " + listBefore.size());
-            for(WebElement element : listBefore) {
-                WebElement phoneData = element.findElement(By.xpath("//h3[text()='" + phone + "']"));
-              if(phoneData.isDisplayed()){
-                    element.click();
-                    app.getHelperContact().click(By.xpath("//button[text()='Remove']"));
-              }
-            }
+        List<WebElement> listBefore = wd.findElements(By.cssSelector("h3"));
+        app.getHelperContact().click(By.xpath("//h3[text()='" + phone + "']"));
+        app.getHelperContact().click(By.xpath("//button[text()='Remove']"));
         List<WebElement> listAfter = wd.findElements(By.cssSelector(".contact-item_card__2SOIM"));
-        Assert.assertNotEquals(listBefore.size(), listAfter.size());
-        //Assert list.size less by 1
+        Assert.assertEquals(listBefore.size()-listAfter.size(),0);
+    }
+    @Test
+    public void removeFirstContactMaria(){
+        Assert.assertEquals(app.getHelperContact().removeOneContact(), 1);
     }
     @Test
     public void removeAllContact(){
-     List<WebElement> list = wd.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
-       for(WebElement element : list) {
-            WebElement elementToRemove = element.findElement(By.cssSelector("h3"));
-            elementToRemove.click();
-            app.getHelperContact().click(By.xpath("//button[text()='Remove']"));
-            }
-       Assert.assertTrue(list.isEmpty());
+app.getHelperContact().removeAllContacts();
+        Assert.assertTrue(app.getHelperUser().isNoContactsHereDisplayed());
     }
 }

@@ -61,15 +61,13 @@ public class HelperContact extends HelperBase {
     }
 
     public void provideContacts() {
-        List<WebElement> list = wd.findElements(By.cssSelector(".contact-item_card__2SOIM"));
-//        List<WebElement> list = wd.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
-        if(list.size()<=3)
-//        do
-                    {addNewContact();
+        if(countOfContacts()<3){
+            for(int i=0; i<3; i++){
+                addOneContact();
+            }
         }
-//        while (list.size()<3);
     }
-    public void addNewContact(){
+    public void addOneContact(){
         int i = new Random().nextInt(1000)+1000;
         Contact contact = Contact.builder()
                 .name("Jay"+i)
@@ -82,5 +80,42 @@ public class HelperContact extends HelperBase {
         openContactForm();
         fillContactForm(contact);
         saveContactForm();
+    }
+
+    public int removeOneContact() {
+        int before = countOfContacts();
+        logger.info("Number of contacts before remove = " + before);
+        removeContact();
+
+        int after = countOfContacts();
+        logger.info("Number of contacts after remove = " + after);
+        return before-after;
+    }
+
+    private void removeContact() {
+        click(By.cssSelector(".contact-item_card__2SOIM"));
+        click(By.xpath("//button[text()='Remove']"));
+        pause(1000);
+    }
+
+    private int countOfContacts() {
+        List<WebElement> list = wd.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
+//        List<WebElement> list = wd.findElements(By.cssSelector(".contact-item_card__2SOIM"));
+        return list.size();
+    }
+
+    public void removeAllContacts() {
+        while(countOfContacts()!=0){
+            removeContact();
+        }
+        logger.info("All contacts deleted");
+    }
+
+    public void removeOneContactDaria(String phone) {
+        List<WebElement> listBefore = wd.findElements(By.cssSelector("h3"));
+        int x = listBefore.size();
+//        pause(1000);
+        click(By.xpath("//h3[text()='" + phone + "']"));
+        click(By.xpath("//button[text()='Remove']"));
     }
 }
