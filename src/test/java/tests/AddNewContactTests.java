@@ -1,5 +1,6 @@
 package tests;
 
+import manager.DataProviderContact;
 import models.Contact;
 import models.User;
 import org.openqa.selenium.By;
@@ -18,17 +19,9 @@ public class AddNewContactTests extends TestBase{
             app.getHelperUser().login(new User().withEmail("testtest@test.com").withPassword("Codirovka84!"));
         }
     }
-    @Test
-    public void addNewContactPositive(){
-        int i = new Random().nextInt(1000)+1000;
-        Contact contact = Contact.builder()
-                .name("Jay"+i)
-                .lastName("Lo")
-                .phone("058111"+i)
-                .email("jlo"+i+"@test.com")
-                .address("Uta")
-                .description("PM")
-                .build();
+    @Test(dataProvider = "contactSuccess", dataProviderClass = DataProviderContact.class)
+    public void addNewContactPositiveAllFields(Contact contact){
+       logger.info("Test run with data:---> "+contact.toString());
         app.getHelperContact().openContactForm();
         app.getHelperContact().fillContactForm(contact);
         app.getHelperContact().saveContactForm();
@@ -104,17 +97,9 @@ public class AddNewContactTests extends TestBase{
         Assert.assertTrue(app.getHelperContact().isAddPageDisplayed());
 
     }
-    @Test
-    public void addNewContactWrongPhone(){
-        Contact contact = Contact.builder()
-                .name("Steve")
-                .lastName("Jo")
-//                .phone("1")
-                .phone("")
-                .email("jos@test.com")
-                .address("Uta")
-                .description("PM")
-                .build();
+    @Test(dataProvider = "contactWrongPhone", dataProviderClass = DataProviderContact.class)
+    public void addNewContactWrongPhone(Contact contact){
+       logger.info("Tests run with data:--> "+contact.toString());
         app.getHelperContact().openContactForm();
         app.getHelperContact().fillContactForm(contact);
         app.getHelperContact().saveContactForm();

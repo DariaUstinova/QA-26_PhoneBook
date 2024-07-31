@@ -1,10 +1,18 @@
 package tests;
 
+import manager.DataProviderUser;
+import models.User;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 public class LoginTests extends TestBase {
 
@@ -16,17 +24,29 @@ public class LoginTests extends TestBase {
         }
     }
 
-    @Test
-    public void  loginSuccess(){
+    @Test(dataProvider = "loginData", dataProviderClass = DataProviderUser.class)
+    public void  loginSuccess(String email, String password){
         logger.info("Start test with name 'loginSuccess'");
-        logger.info("test data begins-->email 'testtest@test.com' & PWD 'Codirovka84!'");
+        logger.info("test data begins-->email: "+email+" & password: "+password);
         app.getHelperUser().openLoginRegistrationForm();
-        app.getHelperUser().fillLoginRegistrationForm("testtest@test.com", "Codirovka84!");
+        app.getHelperUser().fillLoginRegistrationForm(email, password);
         app.getHelperUser().submitLogin();
 
         Assert.assertTrue(app.getHelperUser().isLogged());
         logger.info("Assert check is element button 'Sign out' present");
     }
+    @Test(dataProvider = "loginModels", dataProviderClass = DataProviderUser.class)
+    public void  loginSuccessModel(User user){
+        logger.info("Start test with name 'loginSuccess'");
+        logger.info("test data begins--> "+user.toString());
+        app.getHelperUser().openLoginRegistrationForm();
+        app.getHelperUser().fillLoginRegistrationForm(user);
+        app.getHelperUser().submitLogin();
+
+        Assert.assertTrue(app.getHelperUser().isLogged());
+        logger.info("Assert check is element button 'Sign out' present");
+    }
+
     @Test
     public void loginWrongEmail(){
         logger.info("test data begins-->email 'testtesttest.com' & PWD 'Codirovka84!'");
