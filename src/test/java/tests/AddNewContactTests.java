@@ -29,7 +29,16 @@ public class AddNewContactTests extends TestBase{
         Assert.assertTrue(app.getHelperContact().isContactAddedByName(contact.getName()));
         Assert.assertTrue(app.getHelperContact().isContactAddedByPhone(contact.getPhone()));
     }
-    @Test
+    @Test(dataProvider = "contactCSV", dataProviderClass = DataProviderContact.class)
+    public void addNewContactPositiveAllFieldsCSV(Contact contact){
+        logger.info("Test run with data:---> "+contact.toString());
+        app.getHelperContact().openContactForm();
+        app.getHelperContact().fillContactForm(contact);
+        app.getHelperContact().saveContactForm();
+        Assert.assertTrue(app.getHelperContact().isContactAddedByName(contact.getName()));
+        Assert.assertTrue(app.getHelperContact().isContactAddedByPhone(contact.getPhone()));
+    }
+    @Test(groups = {"smoke","regress","retest"})
     public void addNewContactPositiveReqFields(){
         int i = new Random().nextInt(1000)+1000;
         Contact contact = Contact.builder()

@@ -39,7 +39,7 @@ public class RegistrationTests extends TestBase{
         Assert.assertTrue(app.getHelperUser().isAlertPresent("Wrong email or password"));
 
     }
-    @Test
+    @Test(groups = "smoke")
     public void registrationWrongPassword(){
         User user = new User().withEmail("test101gmail.com").withPassword("Cod");
         app.getHelperUser().openLoginRegistrationForm();

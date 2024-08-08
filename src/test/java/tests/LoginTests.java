@@ -47,7 +47,7 @@ public class LoginTests extends TestBase {
         logger.info("Assert check is element button 'Sign out' present");
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void loginWrongEmail(){
         logger.info("test data begins-->email 'testtesttest.com' & PWD 'Codirovka84!'");
         app.getHelperUser().openLoginRegistrationForm();
@@ -77,5 +77,17 @@ public class LoginTests extends TestBase {
         logger.info("Assert check is alert present with error text 'Wrong email or passwor'");
 
     }
+    @Test(dataProvider = "loginFile", dataProviderClass = DataProviderUser.class)
+    public void  loginSuccessModelDP(User user){
+        logger.info("Start test with name 'loginSuccess'");
+        logger.info("test data begins--> "+user.toString());
+        app.getHelperUser().openLoginRegistrationForm();
+        app.getHelperUser().fillLoginRegistrationForm(user);
+        app.getHelperUser().submitLogin();
+
+        Assert.assertTrue(app.getHelperUser().isLogged());
+        logger.info("Assert check is element button 'Sign out' present");
+    }
+
 
 }
